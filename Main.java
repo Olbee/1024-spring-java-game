@@ -1,10 +1,17 @@
-//import game1024.core.*;
-
-import game1024.core.FieldState;
+import game1024.core.*;
 
 public class Main {
     public static void main(String[] args) {
-        FieldState state = FieldState.PLAYING;
+
+        Field field = new Field(4, 4);
+
+        FieldState gameState = FieldState.PLAYING;
+
+
+
+        while (gameState == FieldState.PLAYING) {
+
+        }
 
     }
 }

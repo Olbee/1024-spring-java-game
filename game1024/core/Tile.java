@@ -18,6 +18,10 @@ public class Tile {
         this.state = TileState.OCCUPIED;
     }
 
+    public void setState(TileState state) {
+        this.state = state;
+    }
+
     public TileState getState() {
         return state;
     }

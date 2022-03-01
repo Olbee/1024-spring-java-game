@@ -13,25 +13,23 @@ public class Field {
     public Field(int rowCount, int columnCount) throws IllegalArgumentException {
         if (rowCount != columnCount) {
             throw new IllegalArgumentException("Rows and columns of the field cannot be of different sizes");
-
         }
         this.rowCount = rowCount;
         this.columnCount = columnCount;
         state = FieldState.PLAYING;
         score = 0;
         generateField();
-        //2 not empty tiles for start of the game
-        initializeNewTile();
-        initializeNewTile();
     }
 
-    public FieldState getState() {
-        return state;
-    }
-
+    public Tile getTile(int rowCount, int columnCount) { return tiles[rowCount][columnCount]; }
+    public int getRowCount() { return rowCount; }
+    public int getColumnCount() { return columnCount; }
+    public FieldState getState() { return state; }
     private void setState(FieldState state) {
         this.state = state;
     }
+    public int getScore() { return score; }
+
 
     private boolean allTilesDown(int boundFieldIndex) {
         boolean tilesChangedPosition = false;
@@ -67,6 +65,10 @@ public class Field {
                 }
             }
         }
+    }
+
+    private void raiseScore(Tile tile1, Tile tile2) {
+        score += tile1.getValue() + tile2.getValue();
     }
 
     //move all tiles in the direction, merge them, and creates one new tile after
@@ -108,20 +110,9 @@ public class Field {
         }
     }
 
-    public void drawField(){
-        System.out.println();
-        for (int i = 0; i < rowCount; i++) {
-            for (int j = 0; j < columnCount; j++) {
-                System.out.print("  " + tiles[i][j].getValue() + " ");
-            }
-            System.out.println();
-        }
-    }
-
     private void initializeNewTile() {
         Random rand = new Random();
-        int randomRow;
-        int randomColumn;
+        int randomRow, randomColumn;
         boolean isAlreadyInitialized = false;
 
         while (!isAlreadyInitialized){
@@ -134,13 +125,17 @@ public class Field {
         }
     }
 
-    //create and initialize field with zeros
     private void generateField() {
+        //create and initialize field with zeros
         tiles = new Tile[rowCount][columnCount];
         for (int i = 0; i < rowCount; i++) {
             for (int j = 0; j < columnCount; j++) {
                 tiles[i][j] = new Tile(0);
             }
         }
+        //2 not empty tiles for start of the game
+
+        initializeNewTile();
+        initializeNewTile();
     }
 }

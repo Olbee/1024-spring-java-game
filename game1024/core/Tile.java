@@ -13,12 +13,12 @@ public class Tile {
         return value;
     }
 
-    public void setValue(int value) {
+    void setValue(int value) {
         this.value = value;
         this.state = TileState.OCCUPIED;
     }
 
-    public void setState(TileState state) {
+    void setState(TileState state) {
         this.state = state;
     }
 

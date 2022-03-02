@@ -16,10 +16,12 @@ public class ConsoleUI {
     }
 
     public void play() {
+
         while (field.getState() == FieldState.PLAYING) {
             drawField();
             inputProcess();
         }
+
         if (field.getState() == FieldState.WON) {
             System.out.println("Congratulation!");
         }

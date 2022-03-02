@@ -3,12 +3,12 @@ package game1024.core;
 import java.util.Random;
 
 public class Field {
+
     private Tile[][] tiles;
     private final int rowCount;
     private final int columnCount;
     private FieldState state;
     private int score;
-
 
     public Field(int rowCount, int columnCount) throws IllegalArgumentException {
         if (rowCount != columnCount) {
@@ -24,17 +24,17 @@ public class Field {
     public Tile getTile(int rowCount, int columnCount) { return tiles[rowCount][columnCount]; }
     public int getRowCount() { return rowCount; }
     public int getColumnCount() { return columnCount; }
+    public int getScore() { return score; }
     public FieldState getState() { return state; }
+
     private void setState(FieldState state) {
         this.state = state;
-    }
-    public int getScore() { return score; }
-
+    } // ??? i dont need ???
 
     private boolean allTilesDown(int boundFieldIndex) {
         boolean tilesChangedPosition = false;
         for (int i = 0; i < rowCount; i++) {
-            for (int k = 0; k < 3; k++) { //3 times to be sure that all tiles will be go down
+            for (int k = 0; k < columnCount-1; k++) { //3 times to be sure that all tiles will be go down
                 for (int j = boundFieldIndex; j > 0; j--) {
                     if (tiles[j][i].getState() == TileState.EMPTY && tiles[j - 1][i].getState() == TileState.OCCUPIED) {
                         //last element in column = last-1 element in column
@@ -59,6 +59,7 @@ public class Field {
                     //last element in column = last + last-1 element in column
                     tiles[j][i].setValue((tiles[j - 1][i].getValue()) + (tiles[j][i].getValue()));
                     tiles[j][i].setState(TileState.OCCUPIED);
+                    raiseScore(tiles[j-1][i], tiles[j][i]);
                     //last-1 element in column = 0
                     tiles[j - 1][i].setValue(0);
                     tiles[j - 1][i].setState(TileState.EMPTY);
@@ -86,6 +87,55 @@ public class Field {
 
             if (allTilesDown(boundFieldIndex) && !tilesChangedPosition) {
                 initializeNewTile();
+            }
+        }
+        else if (direction == MoveDirection.UP) {
+            turnRightField();
+            draw();
+            turnRightField();
+            draw();
+            if (allTilesDown(boundFieldIndex)) {
+                initializeNewTile();
+                tilesChangedPosition = true;
+            }
+            mergeTiles(boundFieldIndex);
+            if (allTilesDown(boundFieldIndex) && !tilesChangedPosition) {
+                initializeNewTile();
+            }
+            draw();
+            turnRightField();
+            draw();
+            turnRightField();
+        }
+    }
+
+    private void draw(){
+        System.out.println("score: " + getScore());
+        for (int i = 0; i < getRowCount(); i++) {
+            for (int j = 0; j < getColumnCount(); j++) {
+                System.out.print("  " + tiles[i][j].getValue() + " ");
+            }
+            System.out.println("\n");
+        }
+    }
+
+    public void turnRightField() {
+        int[][] temp = new int[rowCount][columnCount];
+        int rowToTake = rowCount-1;
+        int columnToTake = 0;
+
+        for (int rowToWrite = 0; rowToWrite < rowCount; rowToWrite++) {
+            rowToTake = rowCount-1;
+            for (int columnToWrite = 0; columnToWrite < columnCount; columnToWrite++) {
+                temp[rowToWrite][columnToWrite] = tiles[rowToTake][columnToTake].getValue();
+                rowToTake--;
+            }
+            columnToTake++;
+        }
+
+        for (int i = 0; i < rowCount; i++) {
+            for (int j = 0; j < columnCount; j++) {
+                tiles[i][j].setValue(temp[i][j]);
             }
         }
     }

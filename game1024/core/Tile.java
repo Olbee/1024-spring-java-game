@@ -5,8 +5,8 @@ public class Tile {
     private TileState state;
 
     public Tile(int value) {
-        this.value = value;
-        this.state = TileState.EMPTY;
+        this.setValue(value);
+        this.setState(TileState.EMPTY);
     }
 
     public int getValue() {
@@ -15,15 +15,14 @@ public class Tile {
 
     void setValue(int value) {
         this.value = value;
-        this.state = TileState.OCCUPIED;
-    }
-
-    void setState(TileState state) {
-        this.state = state;
+        this.state = TileState.OCCUPIED; //mistake, if set value 0, it shouldn't be occupied..
     }
 
     public TileState getState() {
         return state;
     }
 
+    void setState(TileState state) {
+        this.state = state;
+    }
 }

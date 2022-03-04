@@ -2,11 +2,9 @@ package game1024.core;
 
 public class Tile {
     private int value;
-    private TileState state;
 
     public Tile(int value) {
-        this.setValue(value);
-        this.setState(TileState.EMPTY);
+        this.value = value;
     }
 
     public int getValue() {
@@ -15,14 +13,6 @@ public class Tile {
 
     void setValue(int value) {
         this.value = value;
-        this.state = TileState.OCCUPIED; //mistake, if set value 0, it shouldn't be occupied..
     }
 
-    public TileState getState() {
-        return state;
-    }
-
-    void setState(TileState state) {
-        this.state = state;
-    }
 }

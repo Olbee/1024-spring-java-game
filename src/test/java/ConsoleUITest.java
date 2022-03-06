@@ -1,7 +1,3 @@
-import game1024.consoleui.ConsoleUI;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
-
 import game1024.core.Field;
 
 import java.util.Scanner;

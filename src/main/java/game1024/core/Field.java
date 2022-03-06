@@ -1,7 +1,5 @@
 package game1024.core;
 
-import game1024.consoleui.ConsoleUI;
-
 import java.util.Random;
 
 public class Field {

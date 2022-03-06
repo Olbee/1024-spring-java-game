@@ -1,5 +1,4 @@
 import game1024.consoleui.ConsoleUI;
-import java.util.Scanner;
 import game1024.core.*;
 
 public class Main {

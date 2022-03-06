@@ -13,8 +13,9 @@ public class Field {
     private int score;
 
     public Field(int rowCount, int columnCount) throws IllegalArgumentException {
-        if (rowCount != columnCount) {
-            throw new IllegalArgumentException("Rows and columns of the field cannot be of different sizes");
+        if (rowCount != columnCount || rowCount < 4) {
+            throw new IllegalArgumentException("Rows and columns of the field cannot be of the different sizes.\n" +
+                                               "Also it cannot be 0x0, 1x1, 2x2 and 3x3\n");
         }
         this.rowCount = rowCount;
         this.columnCount = columnCount;
@@ -83,7 +84,12 @@ public class Field {
         if (allTilesDown(fieldStateChanged)) { fieldStateChanged = true; }
         rotateFieldDown(direction, true);
 
-        if (fieldStateChanged) initializeNewTile();
+        if (fieldStateChanged) {
+            //the larger the field, the more new tiles are generated
+            for (int i = 0; i < rowCount-3; i++) {
+                initializeNewTile();
+            }
+        }
         updateGameState();
     }
 
@@ -137,38 +143,18 @@ public class Field {
 
     public void updateGameState(){
         int emptyTilesCount = 0;
-        int canBeMergedTilesCount = 0;
+        int canBeMergedCount = 0;
 
         for (int i = 0; i < rowCount; i++) {
             for (int j = 0; j < columnCount; j++) {
                 if (tiles[i][j].getValue() == 1024) { setState(FieldState.WON); }
                 if (tiles[i][j].getValue() == 0) { emptyTilesCount++; }
-//MB FIX IT, DRY!
-                if (i > 0) { //check to merge UP
-                    if (tiles[i][j].getValue() == tiles[i - 1][j].getValue()) {
-                        canBeMergedTilesCount++;
-                    }
-                }
-                if (i < rowCount-1) { //check to merge DOWN
-                    if (tiles[i][j].getValue() == tiles[i + 1][j].getValue()) {
-                        canBeMergedTilesCount++;
-                    }
-                }
-                if (j > 0) { //check to merge LEFT
-                    if (tiles[i][j].getValue() == tiles[i][j-1].getValue()) {
-                        canBeMergedTilesCount++;
-                    }
-                }
-                if (j < columnCount-1) { //check to merge RIGHT
-                    if (tiles[i][j].getValue() == tiles[i][j+1].getValue()) {
-                        canBeMergedTilesCount++;
-                    }
-                }
+                canBeMergedCount = getCanBeMergedCount(canBeMergedCount, i, j);
             }
         }
 
         if (getState() != FieldState.WON) {
-            if (emptyTilesCount == 0 && canBeMergedTilesCount == 0) {
+            if (emptyTilesCount == 0 && canBeMergedCount == 0) {
                 setState(FieldState.LOST);
             }
             else {
@@ -176,6 +162,21 @@ public class Field {
             }
         }
     }
+
+    private int getCanBeMergedCount(int canBeMergedCount, int i, int j) {
+        if (j < columnCount - 1) {
+            if (tiles[i][j].getValue() == tiles[i][j + 1].getValue()) {
+                canBeMergedCount++;
+            }
+        }
+        if (i < rowCount - 1) {
+            if (tiles[i][j].getValue() == tiles[i +1][j].getValue()) {
+                canBeMergedCount++;
+            }
+        }
+        return canBeMergedCount;
+    }
+
 
     //create field and initialize it by zeros and 2 non-zeros tiles for game start
     private void generateField() {

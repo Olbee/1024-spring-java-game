@@ -5,36 +5,55 @@ import java.util.Random;
 public class Field {
 
     private Tile[][] tiles;
-    private final int rowCount;
-    private final int columnCount;
+    private int rowCount;
+    private int columnCount;
     private FieldState state;
     private int score;
 
-    public Field(int rowCount, int columnCount) throws IllegalArgumentException {
-        if (rowCount != columnCount || rowCount < 4) {
-            throw new IllegalArgumentException("Rows and columns of the field cannot be of the different sizes.\n" +
-                                               "Also it cannot be 0x0, 1x1, 2x2 and 3x3\n");
-        }
-        this.rowCount = rowCount;
-        this.columnCount = columnCount;
+    public Field(int rowCount, int columnCount) {
         state = FieldState.PLAYING;
         score = 0;
+        this.rowCount = rowCount;
+        this.columnCount = columnCount;
         generateField();
     }
 
-    public Tile getTile(int rowCount, int columnCount) { return tiles[rowCount][columnCount]; }
-    public int getRowCount() { return rowCount; }
-    public int getColumnCount() { return columnCount; }
-    public int getScore() { return score; }
-    public FieldState getState() { return state; }
+    public Tile getTile(int rowCount, int columnCount) {
+        return tiles[rowCount][columnCount];
+    }
+
+    public int getRowCount() {
+        return rowCount;
+    }
+
+    public int getColumnCount() {
+        return columnCount;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public FieldState getState() {
+        return state;
+    }
+
     private void setState(FieldState state) {
         this.state = state;
+    }
+
+    public void setRowCount(int rowCount) {
+        this.rowCount = rowCount;
+    }
+
+    public void setColumnCount(int columnCount) {
+        this.columnCount = columnCount;
     }
 
     private boolean allTilesDown(boolean fieldStateChanged) {
         for (int i = 0; i < rowCount; i++) {
             for (int k = 0; k < columnCount-1; k++) { //3 times to be sure that all tiles will be go down
-                for (int j = columnCount-1; j > 0; j--) {
+                for (int j = rowCount-1; j > 0; j--) {
                     if (tiles[j][i].getValue() == 0 && tiles[j - 1][i].getValue() != 0) {
                         //"last element" in column will have initialized by "last-1 element" element in column
                         tiles[j][i].setValue(tiles[j - 1][i].getValue());
@@ -84,6 +103,8 @@ public class Field {
 
         if (fieldStateChanged) {
             //the larger the field, the more new tiles are generated
+            // f.e. 4x4 -> + 1 tile (standart)
+            // f.e. 5x5 -> + 2 tiles ...
             for (int i = 0; i < rowCount-3; i++) {
                 initializeNewTile();
             }
@@ -119,22 +140,17 @@ public class Field {
     }
 
     private void turnRightField() {
-        int[][] temp = new int[rowCount][columnCount];
-        int rowToTake = rowCount-1;
-        int columnToTake = 0;
+        int n = getRowCount();
+        int x = (int)Math.floor((double)n / 2);
 
-        for (int rowToWrite = 0; rowToWrite < rowCount; rowToWrite++) {
-            rowToTake = rowCount-1;
-            for (int columnToWrite = 0; columnToWrite < columnCount; columnToWrite++) {
-                temp[rowToWrite][columnToWrite] = tiles[rowToTake][columnToTake].getValue();
-                rowToTake--;
-            }
-            columnToTake++;
-        }
-
-        for (int i = 0; i < rowCount; i++) {
-            for (int j = 0; j < columnCount; j++) {
-                tiles[i][j].setValue(temp[i][j]);
+        int y = n - 1;
+        for (int i = 0; i < (int)x; i++) {
+            for (int j = i; j < y - i; j++) {
+                int k = tiles[i][j].getValue();
+                tiles[i][j].setValue(tiles[y - j][i].getValue());
+                tiles[y - j][i].setValue(tiles[y - i][y - j].getValue());
+                tiles[y - i][y - j].setValue(tiles[j][y - i].getValue());
+                tiles[j][y - i].setValue(k);
             }
         }
     }
@@ -145,7 +161,7 @@ public class Field {
 
         for (int i = 0; i < rowCount; i++) {
             for (int j = 0; j < columnCount; j++) {
-                if (tiles[i][j].getValue() == 1024) { setState(FieldState.WON); }
+                if (tiles[i][j].getValue() == 16) { setState(FieldState.WON); }
                 if (tiles[i][j].getValue() == 0) { emptyTilesCount++; }
                 canBeMergedCount = getCanBeMergedCount(canBeMergedCount, i, j);
             }
@@ -183,6 +199,7 @@ public class Field {
         initializeNewTile();
     }
 
+    //initialize field by tiles with 0 values.
     private void initializeField() {
         tiles = new Tile[rowCount][columnCount];
         for (int i = 0; i < rowCount; i++) {
@@ -212,4 +229,5 @@ public class Field {
         state = FieldState.PLAYING;
         score = 0;
     }
+
 }

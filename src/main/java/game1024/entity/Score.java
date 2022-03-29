@@ -1,19 +1,40 @@
-package game1024.entity;
+package sk.tuke.gamestudio.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import java.io.Serializable;
 import java.util.Date;
 
-public class Score {
+@Entity
+public class Score implements Serializable {
+
+    @Id
+    @GeneratedValue
+    private int ident;
 
     private String game;
     private String player;
     private Date played_on;
     private int points;
 
+    public Score() {
+
+    }
+
     public Score(String game, String player, Date played_on, int points) {
         this.game = game;
         this.player = player;
         this.played_on = played_on;
         this.points = points;
+    }
+
+    public int getIdent() {
+        return ident;
+    }
+
+    public void setIdent(int ident) {
+        this.ident = ident;
     }
 
     public String getGame() {
@@ -51,11 +72,11 @@ public class Score {
     @Override
     public String toString() {
         return "Score{" +
-                "game='" + game + '\'' +
+                "ident=" + ident +
+                ", game='" + game + '\'' +
                 ", player='" + player + '\'' +
                 ", played_on=" + played_on +
                 ", points=" + points +
                 '}';
     }
-
 }

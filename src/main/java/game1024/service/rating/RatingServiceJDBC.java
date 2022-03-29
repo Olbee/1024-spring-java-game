@@ -1,6 +1,6 @@
-package game1024.service.rating;
+package sk.tuke.gamestudio.service.rating;
 
-import game1024.entity.Rating;
+import sk.tuke.gamestudio.entity.Rating;
 
 import java.sql.*;
 import java.util.ArrayList;

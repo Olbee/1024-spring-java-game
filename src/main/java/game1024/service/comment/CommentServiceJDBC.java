@@ -1,8 +1,7 @@
-package game1024.service.comment;
+package sk.tuke.gamestudio.service.comment;
 
-import game1024.entity.Comment;
-import game1024.entity.Score;
-import game1024.service.score.ScoreException;
+import sk.tuke.gamestudio.entity.Comment;
+import sk.tuke.gamestudio.service.score.ScoreException;
 
 import java.sql.*;
 import java.util.ArrayList;

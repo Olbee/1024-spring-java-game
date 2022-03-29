@@ -1,4 +1,4 @@
-package game1024.core;
+package sk.tuke.gamestudio.core;
 
 import java.util.Random;
 

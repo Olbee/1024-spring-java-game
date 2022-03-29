@@ -1,4 +1,4 @@
-package game1024.entity;
+package sk.tuke.gamestudio.entity;
 
 import java.util.Date;
 

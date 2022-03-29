@@ -1,4 +1,4 @@
-package game1024.service.rating;
+package sk.tuke.gamestudio.service.rating;
 
 public class RatingException extends RuntimeException {
     public RatingException(String message) {

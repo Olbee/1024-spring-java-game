@@ -1,10 +1,18 @@
-package game1024.consoleui;
+package sk.tuke.gamestudio.consoleui;
 
-import game1024.core.*;
-import game1024.entity.*;
-import game1024.service.comment.*;
-import game1024.service.rating.*;
-import game1024.service.score.*;
+
+import sk.tuke.gamestudio.core.Field;
+import sk.tuke.gamestudio.core.FieldState;
+import sk.tuke.gamestudio.core.MoveDirection;
+import sk.tuke.gamestudio.entity.Comment;
+import sk.tuke.gamestudio.entity.Rating;
+import sk.tuke.gamestudio.entity.Score;
+import sk.tuke.gamestudio.service.comment.CommentService;
+import sk.tuke.gamestudio.service.comment.CommentServiceJDBC;
+import sk.tuke.gamestudio.service.rating.RatingService;
+import sk.tuke.gamestudio.service.rating.RatingServiceJDBC;
+import sk.tuke.gamestudio.service.score.ScoreService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.*;
 import java.util.Date;
@@ -39,10 +47,18 @@ public class ConsoleUI {
     private Field field;
     private final Scanner scanner;
     private static final Pattern INPUT_PATTERN = Pattern.compile("([4-9])x([4-9])");
-    private final ScoreService scoreService = new ScoreServiceJDBC();
+
+    @Autowired
+    private ScoreService scoreService;
     private final RatingService ratingService = new RatingServiceJDBC();
     private final CommentService commentService = new CommentServiceJDBC();
 
+//    public ConsoleUI(ScoreService scoreService) throws IOException {
+//        this.scanner = new Scanner(System.in);
+//        int size = getFieldSize();
+//        field = new Field(size, size);
+//        this.scoreService = scoreService;
+//    }
     public ConsoleUI() throws IOException {
         this.scanner = new Scanner(System.in);
         int size = getFieldSize();

@@ -1,6 +1,6 @@
-package game1024.service.comment;
+package sk.tuke.gamestudio.service.comment;
 
-import game1024.entity.Comment;
+import sk.tuke.gamestudio.entity.Comment;
 
 import java.util.List;
 

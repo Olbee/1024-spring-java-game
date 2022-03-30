@@ -1,4 +1,4 @@
-package sk.tuke.gamestudio.entity;
+package game1024.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

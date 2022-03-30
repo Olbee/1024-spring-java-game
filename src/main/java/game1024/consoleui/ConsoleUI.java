@@ -1,17 +1,12 @@
-package sk.tuke.gamestudio.consoleui;
+package game1024.consoleui;
 
 
-import sk.tuke.gamestudio.core.Field;
-import sk.tuke.gamestudio.core.FieldState;
-import sk.tuke.gamestudio.core.MoveDirection;
-import sk.tuke.gamestudio.entity.Comment;
-import sk.tuke.gamestudio.entity.Rating;
-import sk.tuke.gamestudio.entity.Score;
-import sk.tuke.gamestudio.service.comment.CommentService;
-import sk.tuke.gamestudio.service.comment.CommentServiceJDBC;
-import sk.tuke.gamestudio.service.rating.RatingService;
-import sk.tuke.gamestudio.service.rating.RatingServiceJDBC;
-import sk.tuke.gamestudio.service.score.ScoreService;
+import game1024.core.*;
+import game1024.entity.*;
+import game1024.service.comment.*;
+import game1024.service.rating.*;
+import game1024.service.score.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.*;

@@ -1,4 +1,4 @@
-package sk.tuke.gamestudio.core;
+package game1024.core;
 
 public class Tile {
     private int value;

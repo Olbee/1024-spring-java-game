@@ -1,6 +1,6 @@
-package sk.tuke.gamestudio.service.score;
+package game1024.service.score;
 
-import sk.tuke.gamestudio.entity.Score;
+import game1024.entity.Score;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

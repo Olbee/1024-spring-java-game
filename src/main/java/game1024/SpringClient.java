@@ -1,11 +1,9 @@
-package sk.tuke.gamestudio;
+package game1024;
 
-import sk.tuke.gamestudio.consoleui.ConsoleUI;
-import sk.tuke.gamestudio.core.Field;
-
-import sk.tuke.gamestudio.service.score.ScoreService;
-
-import sk.tuke.gamestudio.service.score.ScoreServiceJPA;
+import game1024.consoleui.ConsoleUI;
+import game1024.core.Field;
+import game1024.service.score.ScoreService;
+import game1024.service.score.ScoreServiceJPA;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

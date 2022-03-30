@@ -1,5 +1,6 @@
+package game1024;
+
 import game1024.consoleui.ConsoleUI;
-import game1024.core.*;
 
 import java.io.*;
 

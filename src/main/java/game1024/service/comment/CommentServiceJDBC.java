@@ -1,7 +1,6 @@
-package sk.tuke.gamestudio.service.comment;
+package game1024.service.comment;
 
-import sk.tuke.gamestudio.entity.Comment;
-import sk.tuke.gamestudio.service.score.ScoreException;
+import game1024.entity.Comment;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -46,7 +45,7 @@ public class CommentServiceJDBC implements CommentService {
                 return comments;
             }
         } catch (SQLException e) {
-            throw new ScoreException("Problem getting Comments", e);
+            throw new CommentException("Problem getting Comments", e);
         }
     }
 
@@ -57,7 +56,7 @@ public class CommentServiceJDBC implements CommentService {
         ) {
             statement.executeUpdate(DELETE_STATEMENT);
         } catch (SQLException e) {
-            throw new ScoreException("Problem deleting score", e);
+            throw new CommentException("Problem deleting score", e);
         }
     }
 

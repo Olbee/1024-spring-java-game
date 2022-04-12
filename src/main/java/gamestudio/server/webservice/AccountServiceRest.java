@@ -18,7 +18,7 @@ public class AccountServiceRest {
     }
 
     @RequestMapping("/{game}/{login}")
-    public String getAccountPassword(@PathVariable String game, @PathVariable String login) {
-        return accountService.getAccountPassword(game, login);
+    public String getAccountPassword(@PathVariable String game, @PathVariable String email, @PathVariable String login) {
+        return accountService.getAccountPassword(game, email, login);
     }
 }

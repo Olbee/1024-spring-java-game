@@ -135,10 +135,12 @@ public class ConsoleUI {
     private void accountLogin() {
         System.out.print("Write your login: ");
         String login = scanner.nextLine();
+        System.out.print("Write your email: ");
+        String email = scanner.nextLine();
         System.out.print("Write your password: ");
         String password = scanner.nextLine();
 
-        String expectedPassword = accountService.getAccountPassword("1024", login);
+        String expectedPassword = accountService.getAccountPassword("1024", email, login);
 
         if (password.equals(expectedPassword)) {
             userName = login;
@@ -152,9 +154,11 @@ public class ConsoleUI {
     private void accountRegistration() {
             System.out.print("Write new login: ");
             String login = scanner.nextLine();
+            System.out.print("Write new email: ");
+            String email = scanner.nextLine();
             System.out.print("Write new password: ");
             String password = scanner.nextLine();
-            accountService.addAccount(new Account("1024", login, password));
+            accountService.addAccount(new Account("1024", login, email, password));
             System.out.println("Your account has been successfully registered");
     }
 

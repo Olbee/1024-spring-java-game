@@ -19,7 +19,7 @@ public class ScoreServiceRestClient implements ScoreService {
         restTemplate.postForEntity(url, score, Score.class);
     }
 
-    @Override
+    @Override   
     public List<Score> getTopScores(String game) throws ScoreException {
         return Arrays.asList(restTemplate.getForEntity(url + '/' + game, Score[].class).getBody());
     }

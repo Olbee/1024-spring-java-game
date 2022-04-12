@@ -19,7 +19,7 @@ public class AccountServiceJPA implements AccountService {
     }
 
     @Override
-    public String getAccountPassword(String game, String login) {
+    public String getAccountPassword(String game, String email, String login) {
         try {
             String result = (String) entityManager.createNamedQuery("Account.getAccountPassword")
                     .setParameter("game", game)

@@ -18,8 +18,8 @@ public class AccountServiceRestClient implements AccountService {
     }
 
     @Override
-    public String getAccountPassword(String game, String login) {
-        return restTemplate.getForObject(url + "/" + game + "/" + login, Account.class).getPassword();
+    public String getAccountPassword(String game, String email, String login) {
+        return restTemplate.getForObject(url + "/" + game + "/" + email + "/" + login, Account.class).getPassword();
     }
 
     @Override

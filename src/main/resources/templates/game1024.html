@@ -6,17 +6,12 @@
     <link rel="stylesheet" href="/css/stylesheet.css"/>
 </head>
 <body>
-<h1>
-    <br> Welcome to 1024 <br>
 
-    <br> Game State: <span style="color:green;" th:text="${@game1024Controller.getState()}"> </span> <br>
-
-    <br><a style="color:red;" href="/1024/new"> New Game </a> <br>
-
-</h1>
-
-<br> <span th:utext="${@game1024Controller.getHtmlField()}"> </span> <br>
-<br> <span th:utext="${@game1024Controller.getMoveButtons()}"> </span> <br>
+            <br> Welcome to 1024 <br>
+            <br> Game State: <span style="color:green;" th:text="${@game1024Controller.getState()}"> </span> <br>
+            <br><a style="color:red;" href="/1024/new"> New Game </a> <br>
+            <br> <span th:utext="${@game1024Controller.getHtmlField()}"> </span> <br>
+            <br> <span th:utext="${@game1024Controller.getMoveButtons()}"> </span> <br>
 
 </body>
 </html>

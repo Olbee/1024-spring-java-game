@@ -1,0 +1,2 @@
+GET http://localhost:8080/api/rating/1024
+Content-Type: application/json

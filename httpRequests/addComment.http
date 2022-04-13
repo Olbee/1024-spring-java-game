@@ -1,0 +1,9 @@
+POST http://localhost:8080/api/comment
+Content-Type: application/json
+
+{
+  "game" : "1024",
+  "player" : "tester",
+  "commented_on" : "2022-04-12T23:01:37",
+  "comment" : "test"
+}

@@ -9,13 +9,23 @@ public class Field {
     private int columnCount;
     private FieldState state;
     private int score;
+    private int level;
 
-    public Field(int rowCount, int columnCount) {
+    public Field(int rowCount, int columnCount, int level) {
         state = FieldState.PLAYING;
         score = 0;
         this.rowCount = rowCount;
         this.columnCount = columnCount;
-        generateField();
+        this.level = level;
+        generateField(level);
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    private void setLevel(int level) {
+        this.level = level;
     }
 
     public Tile getTile(int rowCount, int columnCount) {
@@ -55,6 +65,7 @@ public class Field {
             for (int k = 0; k < columnCount-1; k++) { //3 times to be sure that all tiles will be go down
                 for (int j = rowCount-1; j > 0; j--) {
                     if (tiles[j][i].getValue() == 0 && tiles[j - 1][i].getValue() != 0) {
+                        if (tiles[j-1][i].getValue() == -1) { break; }
                         //"last element" in column will have initialized by "last-1 element" element in column
                         tiles[j][i].setValue(tiles[j - 1][i].getValue());
                         //"last-1 element" in column will have initialized by 0
@@ -106,7 +117,7 @@ public class Field {
             // f.e. 4x4 -> + 1 tile (standart)
             // f.e. 5x5 -> + 2 tiles ...
             for (int i = 0; i < rowCount-3; i++) {
-                initializeNewTile();
+                initializeNewTile(false);
             }
         }
         updateGameState();
@@ -161,7 +172,7 @@ public class Field {
 
         for (int i = 0; i < rowCount; i++) {
             for (int j = 0; j < columnCount; j++) {
-                if (tiles[i][j].getValue() == 4) { setState(FieldState.WON); }
+                if (tiles[i][j].getValue() == 1024) { setState(FieldState.WON); }
                 if (tiles[i][j].getValue() == 0) { emptyTilesCount++; }
                 canBeMergedCount = getCanBeMergedCount(canBeMergedCount, i, j);
             }
@@ -193,10 +204,13 @@ public class Field {
 
 
     //create field and initialize it by zeros and 2 non-zeros tiles for game start
-    private void generateField() {
+    private void generateField(int level) {
         initializeField();
-        initializeNewTile();
-        initializeNewTile();
+        initializeNewTile(false);
+        initializeNewTile(false);
+        if (level == 2) {
+            initializeNewTile(true);
+        }
     }
 
     //initialize field by tiles with 0 values.
@@ -209,7 +223,7 @@ public class Field {
         }
     }
 
-    private void initializeNewTile() {
+    private void initializeNewTile(boolean blocked_tile) {
         Random rand = new Random();
         int randomRow, randomColumn;
         boolean isAlreadyInitialized = false;
@@ -218,14 +232,19 @@ public class Field {
             randomRow = rand.nextInt(rowCount);
             randomColumn = rand.nextInt(columnCount);
             if (tiles[randomRow][randomColumn].getValue() == 0) {
-                tiles[randomRow][randomColumn].setValue(rand.nextInt(2)+1); //initialize tile by 1 or 2
+                if (blocked_tile) {
+                    tiles[randomRow][randomColumn].setValue(-1); //initialize tile by -1 (as blocked_tile tile)
+                }
+                else {
+                    tiles[randomRow][randomColumn].setValue(rand.nextInt(2)+1); //initialize tile by 1 or 2
+                }
                 isAlreadyInitialized = true;
             }
         }
     }
 
     public void resetGameData() {
-        generateField();
+        generateField(level);
         state = FieldState.PLAYING;
         score = 0;
     }

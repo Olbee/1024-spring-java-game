@@ -14,7 +14,7 @@ public class FieldTest {
     private final Random randomGenerator = new Random();
     private final int rowCount = 4;
     private final int columnCount = 4;
-    Field field = new Field(rowCount, columnCount);
+    Field field = new Field(rowCount, columnCount, 2);
 //
 //    @Test
 //    public void generatedFieldCheck() {

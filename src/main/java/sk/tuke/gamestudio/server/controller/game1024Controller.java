@@ -1,5 +1,6 @@
 package sk.tuke.gamestudio.server.controller;
 
+import org.springframework.web.bind.annotation.PostMapping;
 import sk.tuke.gamestudio.core.Field;
 import sk.tuke.gamestudio.core.MoveDirection;
 import org.springframework.context.annotation.Scope;
@@ -15,7 +16,7 @@ import java.util.Date;
 @Scope(WebApplicationContext.SCOPE_SESSION)
 public class game1024Controller {
 
-    private Field field = new Field(4, 4);
+    private Field field = new Field(4, 4, 2);
 
     @RequestMapping
     public String game1024(@RequestParam(required = false) Integer row, @RequestParam(required = false) Integer column) {
@@ -38,7 +39,7 @@ public class game1024Controller {
 
     @RequestMapping("/new")
     public String newGame() {
-        field = new Field(4, 4);
+        field = new Field(4, 4, 2);
         return "game1024";
     }
 
@@ -89,6 +90,5 @@ public class game1024Controller {
 
         return sb.toString();
     }
-
 
 }

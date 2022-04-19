@@ -26,7 +26,9 @@ public class ConsoleUI {
         YELLOW ("\u001B[33m"),
         BLUE ("\u001B[34m"),
         PURPLE ("\u001B[35m"),
-        WHILE ("\u001B[37m");
+        WHILE ("\u001B[37m"),
+
+        BLACK_BACKGROUND ("\u001B[40m");
 
         private final String pattern;
 
@@ -43,7 +45,8 @@ public class ConsoleUI {
     private Field field;
     private final Scanner scanner;
     private String userName;
-    private static final Pattern INPUT_PATTERN = Pattern.compile("([4-9])(x|X)([4-9])");
+    private boolean signed_in;
+    private int level;
 
     @Autowired
     private ScoreService scoreService;
@@ -54,15 +57,20 @@ public class ConsoleUI {
     @Autowired
     private AccountService accountService;
 
-    public ConsoleUI() throws IOException {
+    public ConsoleUI() {
         this.scanner = new Scanner(System.in);
-        int size = getFieldSize();
-        field = new Field(size, size);
+        level = handleGameLevel();
+        field = new Field(4, 4, level);
+        signed_in = false;
     }
 
     public void playGame() throws IOException {
 
-        handleUserLogin();
+        if (!signed_in) {
+            handleUserLogin();
+        }
+
+
 
         while (field.getState() == FieldState.PLAYING) {
             drawField();
@@ -79,8 +87,6 @@ public class ConsoleUI {
         }
 
         executeGameService();
-
-        askToPlayAgain();
     }
 
     private void handleUserLogin() {
@@ -88,7 +94,7 @@ public class ConsoleUI {
         System.out.println("\nChoose one of the following options: ");
         System.out.println("1. login.");
         System.out.println("2. register an account.");
-        System.out.println("x. exit.");
+        System.out.println("x. exit");
         System.out.println("---------------------");
 
         char input;
@@ -134,6 +140,7 @@ public class ConsoleUI {
 
         if (password.equals(expectedPassword)) {
             userName = login;
+            signed_in = true;
         }
         else {
             System.out.println("Wrong login or password. Please try again..\n");
@@ -152,30 +159,32 @@ public class ConsoleUI {
             System.out.println("Your account has been successfully registered");
     }
 
-    private void executeGameService() {
+    private void executeGameService() throws IOException {
         saveGameScore();
         char input;
 
         while (true){
             System.out.print("---------------------");
             System.out.println("\nChoose one of the following options: ");
-            System.out.println("1. comment game.");
-            System.out.println("2. set game rating.");
-            System.out.println("3. print my latest game rating.");
-            System.out.println("4. print top scores.");
-            System.out.println("5. print last comments.");
-            System.out.println("6. print average game rating.");
+            System.out.println("1. play again.");
+            System.out.println("2. comment game.");
+            System.out.println("3. set game rating.");
+            System.out.println("4. print my latest game rating.");
+            System.out.println("5. print top scores.");
+            System.out.println("6. print last comments.");
+            System.out.println("7. print average game rating.");
             System.out.println("x. exit.");
             System.out.println("---------------------");
 
             input = scanner.next().toUpperCase().charAt(0);
             switch (input) {
-                case '1' : { commentGame(); break; }
-                case '2' : { setGameRating(); break; }
-                case '3' : { printUserLastGameRate(); break; }
-                case '4' : { printTopScores(); break; }
-                case '5' : { printLastComments(); break; }
-                case '6' : { printGameAverageRating(); break; }
+                case '1' : { playAgain(); break; }
+                case '2' : { commentGame(); break; }
+                case '3' : { setGameRating(); break; }
+                case '4' : { printUserLastGameRate(); break; }
+                case '5' : { printTopScores(); break; }
+                case '6' : { printLastComments(); break; }
+                case '7' : { printGameAverageRating(); break; }
                 case 'X' : { scanner.close(); System.exit(0); break; }
                 default : { System.out.println("incorrect input, try again"); break; }
             }
@@ -248,77 +257,46 @@ public class ConsoleUI {
         System.out.println("\n");
     }
 
-    private int getFieldSize() throws IOException {
-        System.out.println("Write the field size you want to play.\n\n" +
-                "For example: 4x4, 5x5, 6x6..\n" + "" +
-                "Note: 4x4 is the smallest possible size of the field\n" +
-                "Note: 9x9 is the biggest possible size of the field\n" +
-                "Note: You cannot create field with different size of row and column (F.e. 4x5)\n");
-        return handleFieldSizeInput();
-    }
-
-    private int handleFieldSizeInput() throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        boolean correctInput = false;
-
-        String input = null;
-        int fieldSize = 0;
-
-        while (!correctInput) {
-            System.out.print("Field: ");
-            input = bufferedReader.readLine();
-            Matcher matcher = INPUT_PATTERN.matcher(input);
-            if (matcher.matches()) {
-                if (input.charAt(0) == input.charAt(2)) { // 4x4 -> 4 == 4
-                    fieldSize = input.charAt(0) - 48; //ascii symbol to dec (char to int)
-                    correctInput = true;
-                }
-                else {
-                    System.out.println("You cannot create a field of different sizes");
-                }
-            }
-            else {
-                System.out.println("invalid input.");
-            }
-        }
-        return fieldSize;
-    }
-
-
-    private void askToPlayAgain() throws IOException {
-        boolean wantToPlayAgain = askUserYesOrNo("\nDo you want to play again? (Y/N)");
-        if (wantToPlayAgain) {
-            field.resetGameData();
-            int newSize = getFieldSize();
-            field = new Field(newSize, newSize);
-            playGame();
-        }
-        else {
-            scanner.close();
-            System.exit(0);
-        }
-    }
-
-    private boolean askUserYesOrNo(String text) { //return TRUE if YES, and FALSE if NO
-        System.out.println(text);
+    private int handleGameLevel() {
         char input;
-        while (true) {
+
+        while (true){
+            System.out.println("\nWrite command: ");
+            System.out.println("1. to play easy level.");
+            System.out.println("2. to play hard level.");
+            System.out.println("B. to sign out.\n");
+
             input = scanner.next().toUpperCase().charAt(0);
-            scanner.nextLine();
-            if (input == 'Y') { return true; }
-            else if (input == 'N') { return false; }
-            System.out.println("invalid input.");
-            System.out.println(text);
+            switch (input) {
+                case '1' : { return 1; }
+                case '2' : { return 2; }
+                case 'B' : { signed_in = false; return 0; }
+                default : { System.out.println("incorrect input, try again"); break; }
+            }
         }
     }
 
-    private void handleUserInput(){
-        System.out.println("Write command:\n" + "X - exit\n" + "W - move UP\n" +
-                "S - move DOWN\n" + "A - move LEFT\n" + "D - move RIGHT");
+    private void playAgain() throws IOException {
+            field.resetGameData();
+            int level = handleGameLevel();
+            field = new Field(4, 4, level);
+            playGame();
+
+    }
+
+    private void handleUserInput() throws IOException {
+        System.out.println("\nWrite command:");
+        System.out.println("W - move UP.");
+        System.out.println("S - move DOWN.");
+        System.out.println("A - move LEFT.");
+        System.out.println("D - move RIGHT.");
+        System.out.println("N - start new game.");
+        System.out.println("X - exit.");
+
         handleMoveInput();
     }
 
-    private void handleMoveInput() {
+    private void handleMoveInput() throws IOException {
         char input;
         boolean inCorrectInput = true; //true -> to enter while cykle
 
@@ -329,6 +307,7 @@ public class ConsoleUI {
                 case 'S' : { field.moveTiles(MoveDirection.DOWN); inCorrectInput = false; break; }
                 case 'A' : { field.moveTiles(MoveDirection.LEFT); inCorrectInput = false; break; }
                 case 'D' : { field.moveTiles(MoveDirection.RIGHT); inCorrectInput = false; break; }
+                case 'N' : { playAgain(); inCorrectInput = false; break; }
                 case 'X' : { scanner.close(); System.exit(0); break; }
                 default : {
                     System.out.println("incorrect input, try again");
@@ -368,17 +347,20 @@ public class ConsoleUI {
     }
 
     private void printColoredValue (int i, int j) {
-        if (field.getTile(i, j).getValue() == 0) {
-            System.out.printf("|%s    %s", Colors.WHILE, Colors.DEFAULT);
+        if (field.getTile(i, j).getValue() == -1) {
+            System.out.printf("|%s    %s", Colors.BLACK_BACKGROUND, Colors.DEFAULT);
+        }
+        else if (field.getTile(i, j).getValue() == 0) {
+            System.out.printf("| %s%-3s%s", Colors.WHILE, field.getTile(i, j), Colors.DEFAULT);
         }
         else if (field.getTile(i, j).getValue() < 16) {
             System.out.printf("| %s%-3s%s", Colors.BLUE, field.getTile(i, j), Colors.DEFAULT);
         }
-        else if (field.getTile(i, j).getValue() < 128) {
+        else if (field.getTile(i, j).getValue() < 256) {
             System.out.printf("| %s%-3s%s", Colors.GREEN, field.getTile(i, j), Colors.DEFAULT);
         }
-        else if (field.getTile(i, j).getValue() < 512) {
-            System.out.printf("|%s%-4s%s", Colors.RED, field.getTile(i, j), Colors.DEFAULT);
+        else if (field.getTile(i, j).getValue() < 1024) {
+            System.out.printf("| %s%-3s%s", Colors.RED, field.getTile(i, j), Colors.DEFAULT);
         }
         else if (field.getTile(i, j).getValue() == 1024) {
             System.out.printf("|%s%-4s%s", Colors.YELLOW, field.getTile(i, j), Colors.DEFAULT);

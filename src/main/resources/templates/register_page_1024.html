@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="/css/stylesheet.css"/>
 </head>
 <body>
@@ -11,7 +16,7 @@
         <h2>Registration</h2>
         <div class="input-box">
             <i class="fa fa-user" aria-hidden="true"></i>
-            <input type="email" name="email" placeholder="Email">
+            <input type="email" name="email" placeholder="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Email entered incorrectly." required>
         </div>
         <div class="input-box">
             <i class="fa fa-user" aria-hidden="true"></i>

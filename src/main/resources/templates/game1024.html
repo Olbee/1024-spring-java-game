@@ -7,11 +7,24 @@
 </head>
 <body>
 
-            <br> Welcome to 1024 <br>
-            <br> Game State: <span style="color:green;" th:text="${@game1024Controller.getState()}"> </span> <br>
-            <br><a style="color:red;" href="/1024/new"> New Game </a> <br>
-            <br> <span th:utext="${@game1024Controller.getHtmlField()}"> </span> <br>
-            <br> <span th:utext="${@game1024Controller.getMoveButtons()}"> </span> <br>
+    <div class="wrapper">
+        <ul class="nav-area">
+            <li><a href="#">home</a></li>
+            <li><a href="#">####</a></li>
+            <li><a href="#">$$$$</a></li>
+        </ul>
+    </div>
+
+    <div class="welcome-text">
+        <h1> 1024 </h1>
+        <p> Game State: <span style="color:green;" th:text="${@game1024Controller.getState()}"> </span> </p>
+        <p><a href="/1024/new" class="btn btn-2" > New Game </a></p>
+    </div>
+
+    <div class="field">
+        <span th:utext="${@game1024Controller.getHtmlField()}"> </span>
+        <span th:utext="${@game1024Controller.getMoveButtons()}"> </span>
+    </div>
 
 </body>
 </html>

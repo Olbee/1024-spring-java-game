@@ -1,4 +1,4 @@
 In developing..
 
 This is the well-known game 1024.
-created using Spring.
+created using Java/Spring, JavaScript, HTML/CSS.

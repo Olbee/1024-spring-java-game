@@ -10,12 +10,6 @@ body {
     background-size: cover;
 }
 
-.field {
-    text-align: center;
-    position: center;
-    margin: 10% 30%;
-}
-
 .nav-area {
     float: right;
     list-style: none;

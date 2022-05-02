@@ -14,8 +14,6 @@ import java.io.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ConsoleUI {
 
@@ -69,8 +67,6 @@ public class ConsoleUI {
         if (!signed_in) {
             handleUserLogin();
         }
-
-
 
         while (field.getState() == FieldState.PLAYING) {
             drawField();

@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/score")
-public class ScoreServiceRest {
+public class    ScoreServiceRest {
 
     @Autowired
     private ScoreService scoreService;

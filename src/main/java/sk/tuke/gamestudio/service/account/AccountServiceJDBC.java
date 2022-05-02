@@ -19,7 +19,7 @@ public class AccountServiceJDBC implements AccountService {
     public static final String SELECT_STATEMENT = "SELECT game, password FROM account WHERE game = ? AND login = ?";
 
     @Override
-    public void addAccount(Account account) {
+    public boolean addAccount(Account account) {
         try(Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
             PreparedStatement statement = connection.prepareStatement(INSERT_STATEMENT);
         ) {
@@ -31,6 +31,7 @@ public class AccountServiceJDBC implements AccountService {
         } catch (SQLException e) {
             throw new AccountException("Problem inserting score", e);
         }
+        return true;
     }
 
     @Override

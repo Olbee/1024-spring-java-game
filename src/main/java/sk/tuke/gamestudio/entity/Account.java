@@ -6,6 +6,7 @@ import java.util.Objects;
 
 @Entity
 
+@NamedQuery(name = "Account.checkIfAccountLoginExists", query = "SELECT a.login FROM Account a WHERE a.game =: game AND a.login =: login")
 @NamedQuery(name = "Account.getAccountPassword", query = "SELECT a.password FROM Account a WHERE a.game =: game AND a.login =: login")
 @NamedQuery(name = "Account.resetAccounts", query = "DELETE FROM Account")
 

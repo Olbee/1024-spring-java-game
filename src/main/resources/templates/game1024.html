@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,24 +8,93 @@
 </head>
 <body>
 
+<!--/*@thymesVar id="scores" type="java.util.List<sk.tuke.gamestudio.entity.Score>"*/-->
+<!--/*@thymesVar id="authenticationController" type="sk.tuke.gamestudio.server.controller.authenticationController"*/-->
+
+    <div th:replace="fragments::header"></div>
+
     <div class="wrapper">
         <ul class="nav-area">
             <li><a href="#">home</a></li>
             <li><a href="#">####</a></li>
-            <li><a href="#">$$$$</a></li>
+            <li><a href="/login/logout">logout</a></li>
         </ul>
     </div>
-
     <div class="welcome-text">
         <h1> 1024 </h1>
+        <span th:if="${@authenticationController.isUserLogged()}">
+        <p> Logged user: <span style="color:yellow;" th:text="${@authenticationController.getLoggedUserName()}"> </span></p>
+        </span>
+        <span th:if ="not ${@authenticationController.isUserLogged()}">
+        <p> Logged user: <span style="color:yellow;" th:text="guest"> </span></p>
+        </span>
         <p> Game State: <span style="color:green;" th:text="${@game1024Controller.getState()}"> </span> </p>
-        <p><a href="/1024/new" class="btn btn-2" > New Game </a></p>
+
+        <span style="color:white;" th:if="${@game1024Controller.isFirstLevel}">
+            <p><a href="/game1024/new/1" class="btn btn-2" > New Game </a></p><br/>
+        </span>
+        <span style="color:white;" th:if="${@game1024Controller.isSecondLevel}">
+            <p><a href="/game1024/new/2" class="btn btn-2" > New Game </a></p><br/>
+        </span>
+
+        <span style="color:white;" th:if="${@game1024Controller.isFirstLevel}">Level - easy.<br/>
+        <p><a href="/game1024/new/2">Change to hard level.</a><br/></p>
+        </span>
+
+        <span style="color:white;" th:if="${@game1024Controller.isSecondLevel}">Level - hard.<br/>
+        <p><a href="/game1024/new/1">Change to easy level.</a><br/></p>
+        </span>
+        <br><hr/>
+
+        <h2 style="color:white;">Scores generated on server with thymeleaf</h2>
+        <hr/>
+        <table id="serverSideScoreTable" >
+            <thead>
+            <tr style="color:white;">
+                <th>Player</th>
+                <th>Points</th>
+                <th>Played at</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr style="color:white;" th:each="score : ${scores}">
+                    <td style="color:white;" th:text="${score.getPlayer}"></td>
+                    <td style="color:white;" th:text="${score.getPoints()}"></td>
+                    <td style="color:white;" th:text="${score.getPlayed_on}"></td><br><br>
+            </tr>
+            </tbody>
+        </table>
+
+
+
+        <h2 style="color:white;">Scores generated on client with javascript</h2>
+        <hr/>
+        <table id="clientSideScoreTable1" >
+            <thead>
+            <tr style="color:white;">
+                <th>Player</th>
+                <th>Points</th>
+                <th>Played at</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+
+
+        <hr/>
+        <br>
     </div>
 
-    <div class="field">
-        <span th:utext="${@game1024Controller.getHtmlField()}"> </span>
-        <span th:utext="${@game1024Controller.getMoveButtons()}"> </span>
+    <span th:utext="${htmlField}"> </span>
+    <span th:utext="${@game1024Controller.getMoveButtons()}"> </span>
+
+    <div onclick="refreshField()">
+        click
     </div>
+
+    <div th:replace="fragments::footer"></div>
 
 </body>
 </html>

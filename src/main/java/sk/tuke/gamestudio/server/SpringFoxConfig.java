@@ -16,7 +16,7 @@ public class SpringFoxConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("gamestudio.server.webservice"))
+                .apis(RequestHandlerSelectors.basePackage("sk.tuke.gamestudio.server.webservice"))
                 .paths(PathSelectors.any())
                 .build();
     }

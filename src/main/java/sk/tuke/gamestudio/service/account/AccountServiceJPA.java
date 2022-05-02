@@ -14,8 +14,20 @@ public class AccountServiceJPA implements AccountService {
     private EntityManager entityManager;
 
     @Override
-    public void addAccount(Account account) throws AccountException {
-        entityManager.persist(account);
+    public boolean addAccount(Account account) throws AccountException {
+        Object exists = null;
+        try {
+            exists = entityManager.createNamedQuery("Account.checkIfAccountLoginExists")
+                    .setParameter("game", account.getGame())
+                    .setParameter("login", account.getLogin()).getSingleResult();
+        }
+        catch(NoResultException e) {}
+
+        if (exists == null) {
+            entityManager.persist(account);
+            return true;
+        }
+        return false;
     }
 
     @Override

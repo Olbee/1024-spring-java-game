@@ -15,8 +15,9 @@ public class AccountServiceRestClient implements AccountService {
     private RestTemplate restTemplate;
 
     @Override
-    public void addAccount(Account account) throws AccountException {
+    public boolean addAccount(Account account) throws AccountException {
         restTemplate.postForEntity(url, account, Account.class);
+        return true;
     }
 
     @Override

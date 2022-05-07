@@ -11,16 +11,29 @@
     <link rel="stylesheet" href="/css/stylesheet.css"/>
 </head>
 <body>
-
     <div class="welcome-text">
-        <h1> WELCOME to 1024! </h1>
+        <h1>Welcome to 1024!</h1>
+        <hr/>
     </div>
-
     <div class="container">
-        <div class="buttons">
-            <a href="/login" class="btn btn-1" >Login</a>
-            <a href="/register" class="btn btn-1" >Register</a>
-        </div>
+        <span th:if ="${@authenticationController.isUserLogged()}">
+            Logged user: <span th:text="${@authenticationController.getLoggedUserName()}"> </span>
+            <div class="buttons">
+                <a href="/game1024" class="btn btn-1" >Play Game</a>
+            </div>
+        </span>
+
+        <span th:if ="${not @authenticationController.isUserLogged()}">
+            You are not logged in.<hr/>
+
+            Register and/or Login<br>to your account.
+            <div class="buttons">
+                <a href="/login" class="btn btn-1" >Login</a>
+                <a href="/register" class="btn btn-1" >Register</a>
+                <hr/>Or you can play<br>as a guest.
+                <a href="/game1024" class="btn btn-1" >Play as guest</a>
+            </div>
+        </span>
     </div>
 
 </body>

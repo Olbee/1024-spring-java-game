@@ -17,12 +17,12 @@ public class RatingServiceRest {
         ratingService.setRating(rating);
     }
 
-    @RequestMapping("/{game}")
+    @GetMapping("/{game}")
     public int getAverageRating(@PathVariable String game) {
         return ratingService.getAverageRating(game);
     }
 
-    @RequestMapping("/{game}/{player}")
+    @GetMapping("/{game}/{player}")
     public int getRating(@PathVariable String game, @PathVariable String player) {
         return ratingService.getRating(game, player);
     }

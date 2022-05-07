@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 @Entity
@@ -60,6 +61,15 @@ public class Comment implements Serializable {
 
     public Date getCommented_on() {
         return commented_on;
+    }
+
+    public String getFormatedDate() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(commented_on);
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        return String.format("%02d.%02d.%02d", day, month, year);
     }
 
     public void setCommented_on(Date commented_on) {

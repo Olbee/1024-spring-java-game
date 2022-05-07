@@ -10,11 +10,112 @@ body {
     background-size: cover;
 }
 
+.field {
+    margin: 0 auto;
+    min-width: 310px;
+    min-height: 310px;
+    width: 310px;
+    height: 310px;
+}
+
+.comments {
+    position: absolute;
+    color: #fff;
+    margin: 32% 75%;
+    text-align: center;
+    font-size: 24px;
+}
+
+input {
+    height: 50px;
+    width: 300px;
+    padding-left: 10px;
+    border: 1px solid rgba(39, 200, 255, 0.5);
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.15);
+    color: #b3b2b2;
+}
+
+.rating {
+    padding-top: 31%;
+    padding-left: 12.5%;
+    color: rgb(222, 222, 222);
+    font-size: 12px;
+}
+
+.rateColumn {
+    opacity: 0.8;
+    min-width: 365px;
+    min-height: 72px;
+    width: 365px;
+    height: 72px;
+}
+
+.tableTemplate {
+    float: right;
+    list-style: none;
+    position: absolute;
+}
+
+#scores {
+    margin: 4% 75%;
+}
+
+#comments {
+    margin: 4% 13%;
+}
+
+.tableTemplate thead th, tfoot th {
+    font-family: 'Rock Salt', cursive;
+}
+
+.tableTemplate tr {
+    color: #ffffff;
+}
+
+.tableTemplate th {
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    border-spacing: 3vw;
+    border-bottom: 1px solid rgba(39, 200, 255, 0.5);
+    letter-spacing: 5px;
+}
+
+.tableTemplate td {
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    border-bottom: 1px solid rgba(39, 200, 255, 0.5);
+    letter-spacing: 5px;
+}
+
+.tableTemplate tbody td {
+    text-align: center;
+}
+
+.tableTemplate tfoot th {
+    text-align: center;
+}
+
+.top-panel {
+    width: 100vw;
+    height: 5vh;
+    background-color: rgba(20, 20, 20, 0.9);
+    padding-top: 2vh;
+    color: rgb(222, 222, 222);
+}
+
+#text-before-logged-user {
+    padding-left: 1vw;
+}
+
+#text-before-not-logged-user {
+    padding-left: 1vw;
+}
+
 .nav-area {
     float: right;
     list-style: none;
-    margin-top: 20px;
-    padding-right: 10px;
+    padding-right: 1vw;
 }
 
 .nav-area li {
@@ -34,50 +135,18 @@ body {
 
 }
 
-.welcome-text {
+.container {
     position: absolute;
-    margin: 20% 40%;
-    text-align: center;
-}
-
-.welcome-text h1 {
-    text-align: center;
     color: #fff;
-    text-transform: uppercase;
-    font-size: 62px;
+    margin: 2% 45%;
+    text-align: center;
+    font-size: 24px;
 }
 
-.welcome-text a {
-    border: 1px solid #fff;
-    padding: 10px 25px;
+.container a {
     text-decoration: none;
     text-transform: uppercase;
-    font-size: 25px;
-    margin-top: 20px;
-    display: inline-block;
-    color: #fff;
-}
-
-.welcome-text a:hover {
-    background: #fff;
-    color: #333;
-}
-
-.welcome-text p {
-    color: #fff;
-}
-
-.wrapper {
-    width: 1170px;
-    margin: auto;
-}
-
-.container {
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+    display: block;
 }
 
 .buttons {
@@ -94,25 +163,6 @@ body {
 }
 
 .btn-1 {
-    width: 300px;
-    height: 100px;
-    border: none;
-    color: white;
-    background-color: rgb(255, 0, 68);
-    border-radius: 4px;
-    box-shadow: inset 0 0 0 0 #f9e506;
-    transition: ease-out 0.3s;
-    font-size: 2rem;
-    outline: none;
-}
-
-.btn-1:hover {
-    box-shadow: inset 300px 0 0 0 #f9e506;
-    cursor: pointer;
-    color: #000;
-}
-
-.btn-2 {
     overflow: hidden;
     color: #fff;
 
@@ -121,7 +171,7 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.btn-2::after {
+.btn-1::after {
     content: "";
     width: 400px;
     height: 400px;
@@ -130,93 +180,16 @@ body {
     left: -100px;
     background-color: #ff3CAC;
     background-image: linear-gradient(225deg, #27D86C 0%, #26CAF8 50%, #C625D0 100%);
+    opacity: 0.7;
     z-index: -1;
     transition: transform 0.5s ease;
 }
 
-.btn-2:hover {
+.btn-1:hover {
     transform: translate(0, -6px);
     box-shadow: 10px -10px 25px 0 rgba(143, 64, 248, 0.5), 10px -10px 25px 0 rgba(39, 200, 255, 0.5);
 }
 
-.btn-2:hover::after {
+.btn-1:hover::after {
     transform: rotate(150deg);
-}
-
-.form {
-    position: center;
-    top: 50%;
-    left: 25%;
-    transform: translate(25%, 25%);
-    width: 350px;
-    min-height: 400px;
-    background-color: #fff;
-    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
-    padding: 50px;
-    box-sizing: border-box;
-}
-
-.form h2 {
-    text-decoration: none;
-    color: #777;
-    margin-top: 20px;
-    font-weight: bold;
-    display: inline-block;
-}
-
-.form .input-box {
-    position: relative;
-    margin: 20px 0;
-}
-
-.form .input-box input {
-    width: 100%;
-    font-size: 16px;
-    border: none;
-    border-bottom: 2px solid #777;
-    outline: none;
-    padding: 10px;
-    padding-left: 30px;
-    box-sizing: border-box;
-    font-weight: bold;
-    color: #777;
-}
-
-.form .input-box input:focus,
-.form .input-box input:valid {
-    border-bottom-color: #03a9f4;
-}
-
-.form .input-box .fa {
-    position: absolute;
-    top: 8px;
-    left: 5px;
-    font-size: 18px;
-    color: #777;
-}
-
-.form .input-box input[type="submit"] {
-    border: none;
-    cursor: pointer;
-    background-color: #03a9f4;
-    color: #fff;
-    font-weight: bold;
-    transition: 0.5s;
-}
-
-.form .input-box input[type="submit"]:hover {
-    background-color: #ff4987;
-}
-
-.form a {
-    text-decoration: none;
-    color: #777;
-    margin-top: 20px;
-    font-weight: bold;
-    display: inline-block;
-    transition: 0.5s;
-}
-
-.form a:hover {
-    color: #ff4987;
 }

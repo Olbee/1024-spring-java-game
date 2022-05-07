@@ -19,7 +19,7 @@ public class CommentServiceRest {
         commentService.addComment(comment);
     }
 
-    @RequestMapping("/{game}")
+    @GetMapping("/{game}")
     public List<Comment> getComments(@PathVariable String game) {
         return commentService.getComments(game);
     }

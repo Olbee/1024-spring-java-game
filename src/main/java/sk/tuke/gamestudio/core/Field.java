@@ -172,7 +172,7 @@ public class Field {
 
         for (int i = 0; i < rowCount; i++) {
             for (int j = 0; j < columnCount; j++) {
-                if (tiles[i][j].getValue() == 4) { setState(FieldState.WON); }
+                if (tiles[i][j].getValue() == 64) { setState(FieldState.WON); }
                 if (tiles[i][j].getValue() == 0) { emptyTilesCount++; }
                 canBeMergedCount = getCanBeMergedCount(canBeMergedCount, i, j);
             }

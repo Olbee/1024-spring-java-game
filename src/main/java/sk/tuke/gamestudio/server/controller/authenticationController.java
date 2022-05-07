@@ -51,7 +51,7 @@ public class authenticationController {
     @RequestMapping("/login/logout")
     public String logout() {
         loggedUserName = null;
-        return "redirect:/";
+        return "redirect:/game1024";
     }
 
     public String getLoggedUserName() {

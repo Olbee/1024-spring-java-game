@@ -2,6 +2,7 @@ package sk.tuke.gamestudio.server.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.ColumnMapRowMapper;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import sk.tuke.gamestudio.core.Field;
@@ -10,9 +11,16 @@ import sk.tuke.gamestudio.core.MoveDirection;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.context.WebApplicationContext;
+import sk.tuke.gamestudio.entity.Account;
+import sk.tuke.gamestudio.entity.Comment;
+import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.entity.Score;
+import sk.tuke.gamestudio.service.comment.CommentService;
+import sk.tuke.gamestudio.service.rating.RatingService;
 import sk.tuke.gamestudio.service.score.ScoreService;
 
+import javax.print.attribute.standard.Media;
+import java.awt.*;
 import java.util.Date;
 
 @Controller
@@ -25,88 +33,123 @@ public class game1024Controller {
 
     @Autowired
     private ScoreService scoreService;
+
+    @Autowired
+    private CommentService commentService;
+
+    @Autowired
+    private RatingService ratingService;
+
     private Field field = new Field(4, 4, 1);
 
     @RequestMapping
-    public String game1024(@RequestParam(required = false) Integer row, @RequestParam(required = false) Integer column, Model model) {
+    public String game1024(@RequestParam(required = false) String command, @RequestParam(required = false) Integer column, Model model) {
         if (field.getState() == FieldState.PLAYING) {
-            if (row != null && column != null) {
-                if (row == 4 && column == 5) field.moveTiles(MoveDirection.UP);
-                else if (row == 5 && column == 4) field.moveTiles(MoveDirection.LEFT);
-                else if (row == 5 && column == 6) field.moveTiles(MoveDirection.RIGHT);
-                else if (row == 6 && column == 5) field.moveTiles(MoveDirection.DOWN);
-
-                if (authenticationController.isUserLogged() && (field.getState() == FieldState.LOST || field.getState() == FieldState.WON)) {
-                    scoreService.addScore(new Score("1024", authenticationController.getLoggedUserName(), new Date(), field.getScore()));
-                }
+            processCommand(command);
+            if (authenticationController.isUserLogged() && (field.getState() == FieldState.LOST || field.getState() == FieldState.WON)) {
+                scoreService.addScore(new Score("1024", authenticationController.getLoggedUserName(), new Date(), field.getScore()));
             }
         }
+        if (column != null) {
+            for (int i = 1; i <= 5; i++) {
+                if (column == i)
+                    ratingService.setRating(new Rating("1024", authenticationController.getLoggedUserName(), new Date(), i));
+            }
+        }
+
         model.addAttribute("htmlField", getHtmlField());
         model.addAttribute("scores", scoreService.getTopScores("1024"));
+        model.addAttribute("comments", commentService.getComments("1024"));
+        model.addAttribute("userRating", ratingService.getRating("1024", authenticationController.getLoggedUserName()));
+        model.addAttribute("averageRating", ratingService.getAverageRating("1024"));
 
         return "game1024";
     }
 
+    private void processCommand(String command) {
+        if (command != null) {
+            switch (command) {
+                case "up": {
+                    field.moveTiles(MoveDirection.UP);
+                    break;
+                }
+                case "down": {
+                    field.moveTiles(MoveDirection.DOWN);
+                    break;
+                }
+                case "left": {
+                    field.moveTiles(MoveDirection.LEFT);
+                    break;
+                }
+                case "right": {
+                    field.moveTiles(MoveDirection.RIGHT);
+                    break;
+                }
+            }
+        }
+    }
+
+    @RequestMapping(value = "/field", produces = MediaType.TEXT_HTML_VALUE)
+    @ResponseBody
+    public String field(@RequestParam(required = false) String command) {
+        processCommand(command);
+        return getHtmlField();
+    }
+
+    public int getScore() { return field.getScore(); }
     public String getCurrentTime() {
         return new Date().toString();
     }
-
-    public String getState() {
-        return field.getState().toString();
+    public boolean isRated() {
+        return (ratingService.getRating("1024", authenticationController.getLoggedUserName())) != 0;
     }
-
     public boolean isFirstLevel() {
         return field.getLevel() == 1;
     }
-
     public boolean isSecondLevel() {
         return field.getLevel() == 2;
+    }
+    public boolean isPlayingState() { return field.getState() == FieldState.PLAYING; }
+    public boolean isWonState() { return field.getState() == FieldState.WON; }
+    public boolean isLostState() { return field.getState() == FieldState.LOST; }
+
+    @RequestMapping("/addComment")
+    public String addComment(String comment) {
+        commentService.addComment(new Comment("1024", authenticationController.getLoggedUserName(), new Date(), comment));
+        return "redirect:/game1024";
     }
 
     @RequestMapping("/new/1")
     public String newGameLevel1() {
         field = new Field(4, 4, 1);
-        return "game1024";
+        return "redirect:/game1024";
     }
 
     @RequestMapping("/new/2")
     public String newGameLevel2() {
         field = new Field(4, 4, 2);
-        return "game1024";
+        return "redirect:/game1024";
     }
 
-    public String getMoveButtons() {
+    public String getHtmlRateColumn() {
         StringBuilder sb = new StringBuilder();
 
-
         sb.append("<table>\n");
-        for (int row = 4; row < 7; row++) {
-            sb.append("<tr>\n");
-            for (int column = 4; column < 7; column++) {
-                sb.append("<td>\n");
-                sb.append("<a href='/game1024?row=" + row + "&column=" + column + "'>\n");
-                sb.append("<img src='/images/1024/" + getImageName(row, column) + ".png'>");
-                sb.append("</a>\n");
-                sb.append("</td>\n");
-            }
-            sb.append("</tr>\n");
+        sb.append("<tr>\n");
+        for (int column = 1; column <= 5; column++) {
+            sb.append("<td>\n");
+            sb.append("<a href='/game1024?column=" + column + "'>\n");
+            sb.append("<img src='/images/1024/rate.png'>");
+            sb.append("</a>\n");
+            sb.append("</td>\n");
         }
+        sb.append("</tr>\n");
         sb.append("</table>\n");
 
         return sb.toString();
     }
 
-    public String getImageName(int row, int column) {
-        if (row == 4 && column == 5) return "up";
-        if (row == 5 && column == 4) return "left";
-        if (row == 5 && column == 6) return "right";
-        if (row == 6 && column == 5) return "down";
-        return "0";
-    }
-
-    @RequestMapping(value = "/field", produces = MediaType.TEXT_HTML_VALUE)
-    @ResponseBody
-    private String getHtmlField() {
+    public String getHtmlField() {
         StringBuilder sb = new StringBuilder();
 
         sb.append("<table>\n");

@@ -5,96 +5,141 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="/css/stylesheet.css"/>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/scripts/script.js"></script>
 </head>
 <body>
 
 <!--/*@thymesVar id="scores" type="java.util.List<sk.tuke.gamestudio.entity.Score>"*/-->
+<!--/*@thymesVar id="comments" type="java.util.List<sk.tuke.gamestudio.entity.Comment>"*/-->
 <!--/*@thymesVar id="authenticationController" type="sk.tuke.gamestudio.server.controller.authenticationController"*/-->
 
-    <div th:replace="fragments::header"></div>
-
-    <div class="wrapper">
+<div class="top-panel">
         <ul class="nav-area">
-            <li><a href="#">home</a></li>
-            <li><a href="#">####</a></li>
-            <li><a href="/login/logout">logout</a></li>
+            <span th:if="${@authenticationController.isUserLogged()}">
+                <li><a href="/login/logout">logout</a></li>
+            </span>
+            <span th:if="not ${@authenticationController.isUserLogged()}">
+                <li><a href="/login">login</a></li>
+                <li><a href="/register">register</a></li>
+            </span>
+            <li><a href="/">home</a></li>
         </ul>
+
+        <span id="text-before-logged-user" th:if="${@authenticationController.isUserLogged()}">
+            Logged user: <span th:text="${@authenticationController.getLoggedUserName()}"> </span>
+        </span>
+        <span id="text-before-not-logged-user" th:if ="not ${@authenticationController.isUserLogged()}">
+            Logged user: <span th:text="guest"> </span>
+        </span>
+</div>
+
+<div class="container">
+    <h1>1024</h1>
+
+    Score: <span th:text="${@game1024Controller.getScore()}"> </span>
+    <span th:if ="${@game1024Controller.isPlayingState()}">
+        <div class="field" id="field"></div>
+    </span>
+
+    <span th:if ="${not @game1024Controller.isPlayingState()}">
+        <br><br>
+        <span th:if ="${@game1024Controller.isWonState()}"> Congratulations, you won! </span>
+        <span th:if ="${@game1024Controller.isLostState()}"> You lost. </span>
+    </span>
+
+        <span th:if="${@game1024Controller.isFirstLevel}">
+            <a href="/game1024/new/1" class="btn btn-1" > New Game </a>
+        </span>
+        <span th:if="${@game1024Controller.isSecondLevel}">
+            <a href="/game1024/new/2" class="btn btn-1" > New Game </a>
+        </span>
+
+        <span th:if="${@game1024Controller.isFirstLevel}">
+            <a href="/game1024/new/2" class="btn btn-1" >try hard lvl</a>
+        </span>
+        <span th:if="${@game1024Controller.isSecondLevel}">
+            <a href="/game1024/new/1" class="btn btn-1" >try easy lvl</a>
+        </span>
+</div>
+
+<div id="comments" class="tableTemplate">
+    <table>
+        <thead>
+        <tr>
+            <th>User</th>
+            <th>Comment</th>
+            <th>On</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="comment : ${comments}">
+            <td th:text="${comment.getPlayer()}"></td>
+            <td th:text="${comment.getComment()}"></td>
+            <td th:text="${comment.getFormatedDate()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="scores" class="tableTemplate">
+    <table>
+        <thead>
+        <tr>
+            <th>User</th>
+            <th>Score</th>
+            <th>On</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="score : ${scores}">
+            <td th:text="${score.getPlayer}"></td>
+            <td th:text="${score.getPoints()}"></td>
+            <td th:text="${score.getFormatedDate()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<span th:if="${@authenticationController.isUserLogged()}">
+    <div class="comments">
+        Add a comment
+        <br><br>
+        <form action="/game1024/addComment">
+            <input type="text" name="comment" placeholder="Write your comment here..." required>
+        </form>
     </div>
-    <div class="welcome-text">
-        <h1> 1024 </h1>
+</span>
+
+<div class="rating">
+    <h1>
+        average rating of this game: <td th:text="${averageRating}"></td>
+    </h1>
+
+    <br><br>
+
+    <h1>
         <span th:if="${@authenticationController.isUserLogged()}">
-        <p> Logged user: <span style="color:yellow;" th:text="${@authenticationController.getLoggedUserName()}"> </span></p>
+            user rating:
+            <span th:if="${@game1024Controller.isRated()}">
+                <td th:text="${userRating}"></td>
+            </span>
+            <span th:if="${not @game1024Controller.isRated()}">
+                not rated yet.
+            </span>
         </span>
-        <span th:if ="not ${@authenticationController.isUserLogged()}">
-        <p> Logged user: <span style="color:yellow;" th:text="guest"> </span></p>
-        </span>
-        <p> Game State: <span style="color:green;" th:text="${@game1024Controller.getState()}"> </span> </p>
+    </h1>
 
-        <span style="color:white;" th:if="${@game1024Controller.isFirstLevel}">
-            <p><a href="/game1024/new/1" class="btn btn-2" > New Game </a></p><br/>
-        </span>
-        <span style="color:white;" th:if="${@game1024Controller.isSecondLevel}">
-            <p><a href="/game1024/new/2" class="btn btn-2" > New Game </a></p><br/>
-        </span>
+    <br>
 
-        <span style="color:white;" th:if="${@game1024Controller.isFirstLevel}">Level - easy.<br/>
-        <p><a href="/game1024/new/2">Change to hard level.</a><br/></p>
-        </span>
+    <span th:if="${@authenticationController.isUserLogged()}">
+        <div class="rateColumn">
+            <td th:utext="${@game1024Controller.getHtmlRateColumn()}"></td>
+        </div>
+    </span>
 
-        <span style="color:white;" th:if="${@game1024Controller.isSecondLevel}">Level - hard.<br/>
-        <p><a href="/game1024/new/1">Change to easy level.</a><br/></p>
-        </span>
-        <br><hr/>
+</div>
 
-        <h2 style="color:white;">Scores generated on server with thymeleaf</h2>
-        <hr/>
-        <table id="serverSideScoreTable" >
-            <thead>
-            <tr style="color:white;">
-                <th>Player</th>
-                <th>Points</th>
-                <th>Played at</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr style="color:white;" th:each="score : ${scores}">
-                    <td style="color:white;" th:text="${score.getPlayer}"></td>
-                    <td style="color:white;" th:text="${score.getPoints()}"></td>
-                    <td style="color:white;" th:text="${score.getPlayed_on}"></td><br><br>
-            </tr>
-            </tbody>
-        </table>
-
-
-
-        <h2 style="color:white;">Scores generated on client with javascript</h2>
-        <hr/>
-        <table id="clientSideScoreTable1" >
-            <thead>
-            <tr style="color:white;">
-                <th>Player</th>
-                <th>Points</th>
-                <th>Played at</th>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-
-
-
-        <hr/>
-        <br>
-    </div>
-
-    <span th:utext="${htmlField}"> </span>
-    <span th:utext="${@game1024Controller.getMoveButtons()}"> </span>
-
-    <div onclick="refreshField()">
-        click
-    </div>
-
-    <div th:replace="fragments::footer"></div>
 
 </body>
 </html>

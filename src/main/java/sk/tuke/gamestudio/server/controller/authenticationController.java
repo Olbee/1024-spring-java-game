@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
 import sk.tuke.gamestudio.entity.Account;
 import sk.tuke.gamestudio.service.account.AccountService;
+import sk.tuke.gamestudio.service.email.EmailSender;
 
 import java.util.Objects;
 
@@ -25,7 +27,7 @@ public class authenticationController {
     }
 
     @RequestMapping("/register/register")
-    public String login(String email, String login, String password) {
+    public String login(@RequestParam String email, @RequestParam String login, @RequestParam String password) {
         if (accountService.addAccount(new Account("1024", email, login, password))) {
             return "redirect:/login";
         }
@@ -38,7 +40,7 @@ public class authenticationController {
     }
 
     @RequestMapping("/login/login")
-    public String login(String login, String password) {
+    public String login(@RequestParam String login, @RequestParam String password) {
         if (Objects.equals(accountService.getAccountPassword("1024", login), password)) {
             loggedUserName = login;
             return "redirect:/game1024";

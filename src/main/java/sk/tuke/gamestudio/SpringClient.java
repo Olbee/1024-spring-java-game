@@ -1,5 +1,9 @@
 package sk.tuke.gamestudio;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import sk.tuke.gamestudio.consoleui.ConsoleUI;
 import sk.tuke.gamestudio.service.account.AccountService;
 import sk.tuke.gamestudio.service.account.AccountServiceJDBC;

@@ -23,4 +23,28 @@ function refreshGame1024field(url) {
 }
 
 //------------------------------------------------------------------------
-//UPDATING ADDCOMMENT
+//EMAIL VERIFICATION
+
+async function emailVerificationCodeQuery() {
+    event.preventDefault();
+    var email = document.getElementById("email").value;
+
+    var login = document.getElementById("login").value;
+    var password = document.getElementById("password").value;
+    var sent = await $.get('/api/send-email/' + email);
+    var counter = 3;
+    var verification_code = prompt('Please, write code from email here..\rYou have only ' + counter + ' attempts.\n');
+    while (verification_code != sent && counter > 0) {
+        if (verification_code == null) break;
+        counter--;
+        verification_code = prompt('Please, write code from email here..\rYou have only ' + counter + ' attempts.\n');
+    }
+    document.location.href = "/register/register?email=" + email + "&login=" + login + "&password=" + password;
+}
+
+
+//------------------------------------------------------------------------
+//
+
+
+

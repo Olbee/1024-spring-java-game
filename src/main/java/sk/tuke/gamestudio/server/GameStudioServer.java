@@ -4,6 +4,7 @@ import sk.tuke.gamestudio.service.account.AccountService;
 import sk.tuke.gamestudio.service.account.AccountServiceJPA;
 import sk.tuke.gamestudio.service.comment.CommentService;
 import sk.tuke.gamestudio.service.comment.CommentServiceJPA;
+import sk.tuke.gamestudio.service.email.EmailSender;
 import sk.tuke.gamestudio.service.rating.RatingService;
 import sk.tuke.gamestudio.service.rating.RatingServiceJPA;
 import sk.tuke.gamestudio.service.score.ScoreService;
@@ -15,10 +16,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
+import java.beans.BeanProperty;
+
 @SpringBootApplication
 @Configuration
 @EntityScan(basePackages = "sk.tuke.gamestudio.entity")
 public class GameStudioServer {
+
     public static void main(String[] args) {
         SpringApplication.run(GameStudioServer.class, args);
     }
@@ -47,5 +51,8 @@ public class GameStudioServer {
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
+
+    @Bean
+    public EmailSender emailSender() { return new EmailSender(); }
 
 }

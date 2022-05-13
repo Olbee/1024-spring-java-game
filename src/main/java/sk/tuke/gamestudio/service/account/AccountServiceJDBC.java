@@ -16,7 +16,8 @@ public class AccountServiceJDBC implements AccountService {
     public static final String JDBC_PASSWORD = "crazzysaynss";
     public static final String DELETE_STATEMENT = "DELETE FROM account";
     public static final String INSERT_STATEMENT = "INSERT INTO score (game, email, login, password) VALUES (?, ?, ?, ?)";
-    public static final String SELECT_STATEMENT = "SELECT game, password FROM account WHERE game = ? AND login = ?";
+    public static final String SELECT_LOGIN = "SELECT  login FROM account WHERE game = ? AND login ?";
+    public static final String SELECT_PASSWORD = "SELECT game, password FROM account WHERE game = ? AND login = ?";
 
     @Override
     public boolean addAccount(Account account) {
@@ -35,9 +36,21 @@ public class AccountServiceJDBC implements AccountService {
     }
 
     @Override
+    public boolean isLoginUsed(String game, String login) {
+        //dont need this :>
+        return false;
+    }
+
+    @Override
+    public boolean isEmailUsed(String game, String email) {
+        //dont need this :>
+        return false;
+    }
+
+    @Override
     public String getAccountPassword(String game, String login) {
         try(Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-            PreparedStatement statement = connection.prepareStatement(SELECT_STATEMENT)
+            PreparedStatement statement = connection.prepareStatement(SELECT_PASSWORD)
         ) {
             statement.setString(1, game);
             statement.setString(2, login);

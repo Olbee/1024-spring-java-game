@@ -21,6 +21,18 @@ public class AccountServiceRestClient implements AccountService {
     }
 
     @Override
+    public boolean isLoginUsed(String game, String login) {
+        //i dont need this :>
+        return true;
+    }
+
+    @Override
+    public boolean isEmailUsed(String game, String email) {
+        //i dont need this :>
+        return true;
+    }
+
+    @Override
     public String getAccountPassword(String game, String login) throws AccountException {
         return restTemplate.getForObject(url + "/" + game + "/" + login, String.class);
     }

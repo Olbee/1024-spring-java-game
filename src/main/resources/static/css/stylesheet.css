@@ -14,8 +14,8 @@ hr {
     margin: 1vw;
     height: 1px;
     border: none;
-    background: rgba(255, 0, 0, 0.6);
-    color: rgba(255, 0, 0, 0.6);
+    background: rgba(31, 59, 220, 0.6);
+    color: rgba(31, 59, 220, 0.6);
 }
 
 .field {
@@ -29,9 +29,14 @@ hr {
 .comments {
     position: absolute;
     color: #fff;
-    margin: 32% 75%;
+    opacity: 0.9;
+    margin: 31% 69%;
     text-align: center;
     font-size: 24px;
+}
+
+#comment {
+    margin-top: 1vh;
 }
 
 input {
@@ -45,32 +50,42 @@ input {
 }
 
 .rating {
-    padding-top: 31%;
-    padding-left: 12.5%;
+    min-width: 400px;
+    min-height: 100px;
+    width: 400px;
+    height: 100px;
+    padding-top: 22.5%;
+    margin: 6.5%;
+    text-align: center;
     color: rgb(222, 222, 222);
+    opacity: 0.9;
     font-size: 12px;
 }
 
 .rateColumn {
-    opacity: 0.8;
-    min-width: 365px;
-    min-height: 72px;
-    width: 365px;
-    height: 72px;
+    opacity: 0.9;
+    min-width: 400px;
+    min-height: 100px;
+    width: 400px;
+    height: 100px;
 }
 
 .tableTemplate {
     float: right;
     list-style: none;
     position: absolute;
+    min-width: 400px;
+    min-height: 400px;
+    width: 400px;
+    height: 400px;
 }
 
 #scores {
-    margin: 4% 75%;
+    margin: 3.5% 69%;
 }
 
 #comments {
-    margin: 4% 13%;
+    margin: 3.5% 7%;
 }
 
 .tableTemplate thead th, tfoot th {
@@ -79,21 +94,22 @@ input {
 
 .tableTemplate tr {
     color: #ffffff;
+    opacity: 0.9;
 }
 
 .tableTemplate th {
     padding-top: 1vh;
     padding-bottom: 1vh;
-    border-spacing: 3vw;
-    border-bottom: 1px solid rgba(39, 200, 255, 0.5);
-    letter-spacing: 5px;
+    border-spacing: 2vw;
+    border-bottom: 1px solid rgba(31, 59, 220, 0.5);
+    letter-spacing: 3px;
 }
 
 .tableTemplate td {
-    padding-top: 1vh;
-    padding-bottom: 1vh;
-    border-bottom: 1px solid rgba(39, 200, 255, 0.5);
-    letter-spacing: 5px;
+    padding-top: 0.8vh;
+    padding-bottom: 0.8vh;
+    border-bottom: 1px solid rgba(31, 59, 220, 0.7);
+    letter-spacing: 2px;
 }
 
 .tableTemplate tbody td {
@@ -110,6 +126,23 @@ input {
     background-color: rgba(20, 20, 20, 0.9);
     padding-top: 2vh;
     color: rgb(222, 222, 222);
+}
+
+.bottom-panel {
+    width: 100vw;
+    height: 5vh;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    top: auto;
+    right: auto;
+    padding-top: 1.8vh;
+    background-color: rgba(20, 20, 20, 0.9);
+    color: rgb(222, 222, 222);
+}
+
+#text-before-creator {
+    padding-left: 1vw;
 }
 
 #text-before-logged-user {
@@ -131,7 +164,9 @@ input {
 }
 
 .nav-area li a {
+    margin-top: 3vh;
     color: #fff;
+    opacity: 0.9;
     text-decoration: none;
     padding: 5px 20px;
     font-size: 20px;
@@ -140,6 +175,7 @@ input {
 .nav-area li a:hover {
     background: #fff;
     color: #333;
+    opacity: 0.9;
 
 }
 
@@ -147,23 +183,25 @@ input {
     top: 0;
     left: 0;
     width: 25%;
-    margin: 1% 40%;
+    margin: 1% 37%;
     text-align: center;
 }
 
 .welcome-text h1 {
     text-align: center;
     color: #fff;
+    opacity: 0.9;
     text-transform: uppercase;
-    font-size: 38px;
+    font-size: 21px;
 }
 
 .container {
     position: absolute;
     color: #fff;
-    margin: 2% 45%;
+    margin: 2% 39%;
+    opacity: 0.9;
     text-align: center;
-    font-size: 23px;
+    font-size: 17px;
 }
 
 .container a {
@@ -188,6 +226,7 @@ input {
 .btn-1 {
     overflow: hidden;
     color: #fff;
+    opacity: 0.9;
 
     border-radius: 30px;
     box-shadow: 0 0 0 0 rgba(143, 64, 248, 0.5), 0 0 0 0 rgba(39, 200, 255, 0.5);

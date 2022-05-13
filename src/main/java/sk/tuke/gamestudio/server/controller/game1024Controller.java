@@ -46,9 +46,6 @@ public class game1024Controller {
     public String game1024(@RequestParam(required = false) String command, @RequestParam(required = false) Integer column, Model model) {
         if (field.getState() == FieldState.PLAYING) {
             processCommand(command);
-            if (authenticationController.isUserLogged() && (field.getState() == FieldState.LOST || field.getState() == FieldState.WON)) {
-                scoreService.addScore(new Score("1024", authenticationController.getLoggedUserName(), new Date(), field.getScore()));
-            }
         }
         if (column != null) {
             for (int i = 1; i <= 5; i++) {
@@ -67,7 +64,7 @@ public class game1024Controller {
     }
 
     private void processCommand(String command) {
-        if (command != null) {
+        if (command != null && field.getState() == FieldState.PLAYING) {
             switch (command) {
                 case "up": {
                     field.moveTiles(MoveDirection.UP);
@@ -93,13 +90,13 @@ public class game1024Controller {
     @ResponseBody
     public String field(@RequestParam(required = false) String command) {
         processCommand(command);
+        if (authenticationController.isUserLogged() && (field.getState() == FieldState.LOST || field.getState() == FieldState.WON)) {
+            scoreService.addScore(new Score("1024", authenticationController.getLoggedUserName(), new Date(), field.getScore()));
+        }
         return getHtmlField();
     }
 
     public int getScore() { return field.getScore(); }
-    public String getCurrentTime() {
-        return new Date().toString();
-    }
     public boolean isRated() {
         return (ratingService.getRating("1024", authenticationController.getLoggedUserName())) != 0;
     }
@@ -112,6 +109,19 @@ public class game1024Controller {
     public boolean isPlayingState() { return field.getState() == FieldState.PLAYING; }
     public boolean isWonState() { return field.getState() == FieldState.WON; }
     public boolean isLostState() { return field.getState() == FieldState.LOST; }
+
+    @RequestMapping(value = "/score", produces = MediaType.TEXT_HTML_VALUE)
+    @ResponseBody
+    public String currentScore() {
+        return Integer.toString(field.getScore());
+    }
+
+    @RequestMapping(value = "/state", produces = MediaType.TEXT_HTML_VALUE)
+    @ResponseBody
+    public String currentState() {
+        return field.getState().toString();
+    }
+
 
     @RequestMapping("/addComment")
     public String addComment(String comment) {
@@ -157,9 +167,7 @@ public class game1024Controller {
             sb.append("<tr>\n");
             for (int column = 0; column < field.getColumnCount(); column++) {
                 sb.append("<td>\n");
-                sb.append("<a href='/game1024?row=" + row + "&column=" + column + "'>\n");
                 sb.append("<img src='/images/1024/" + field.getTile(row, column).getValue() + ".png'>");
-                sb.append("</a>\n");
                 sb.append("</td>\n");
             }
             sb.append("</tr>\n");

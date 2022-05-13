@@ -20,7 +20,7 @@ public class EmailSender {
             message.setFrom("game1024service@gmail.com");
             message.setTo(email);
             message.setSubject("Verification code.");
-            message.setText("Welcome to game1024.\r\rYour verification code is: " + verification_number + ".\rPlease enter it on the site to successfully complete the registration.\r ");
+            message.setText("Welcome to game1024.\r\rYour verification code is: " + verification_number + "\rPlease enter it on the site to successfully complete the registration.\r ");
 
             javaMailSender.send(message);
             return Integer.toString(verification_number);

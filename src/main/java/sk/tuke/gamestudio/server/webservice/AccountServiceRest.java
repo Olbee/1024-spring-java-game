@@ -22,4 +22,14 @@ public class AccountServiceRest {
         return accountService.getAccountPassword(game, login);
     }
 
+    @RequestMapping("/{game}/loginUsed/{login}")
+    public boolean isLoginUsed(@PathVariable String game, @PathVariable String login) {
+        return accountService.isLoginUsed(game, login);
+    }
+
+    @RequestMapping("/{game}/emailUsed/{email}")
+    public boolean isEmailUsed(@PathVariable String game, @PathVariable String email) {
+        return accountService.isEmailUsed(game, email);
+    }
+
 }

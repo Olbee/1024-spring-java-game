@@ -19,7 +19,9 @@ public class AccountServiceJPA implements AccountService {
         try {
             exists = entityManager.createNamedQuery("Account.checkIfAccountLoginExists")
                     .setParameter("game", account.getGame())
-                    .setParameter("login", account.getLogin()).getSingleResult();
+                    .setParameter("login", account.getLogin())
+                    .setParameter("email", account.getEmail())
+                    .getSingleResult();
         }
         catch(NoResultException e) {}
 
@@ -28,6 +30,32 @@ public class AccountServiceJPA implements AccountService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean isLoginUsed(String game, String login) throws AccountException {
+        Object used = null;
+        try {
+            used = entityManager.createNamedQuery("Account.isLoginUsed")
+                    .setParameter("game", game)
+                    .setParameter("login", login)
+                    .getSingleResult();
+        } catch (NoResultException e) {}
+        if (used == null) return false;
+        else return true;
+    }
+
+    @Override
+    public boolean isEmailUsed(String game, String email) throws AccountException {
+        Object used = null;
+        try {
+            used = entityManager.createNamedQuery("Account.isEmailUsed")
+                    .setParameter("game", game)
+                    .setParameter("email", email)
+                    .getSingleResult();
+        } catch (NoResultException e) {}
+        if (used == null) return false;
+        else return true;
     }
 
     @Override

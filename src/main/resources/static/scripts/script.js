@@ -67,8 +67,8 @@ async function emailVerificationCodeQuery() {
         }
     }
     else {
-        if (email_already_used === true) alert("Account with this email is already exists.\nPlease, try another.");
-        else alert("Account with this email address is already exists.\nPlease, try another.");
+        if (email_already_used === true) alert("Account with this email address is already exists.\nPlease, try another.");
+        else alert("Account with this login is already exists.\nPlease, try another.");
     }
 }
 

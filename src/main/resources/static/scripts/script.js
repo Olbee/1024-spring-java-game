@@ -27,6 +27,14 @@ async function refreshGame1024field(url) {
             showScore();
         });
     }
+    else if (state === "WON") {
+        alert("Congratulations! You Won :)");
+        updateScores();
+    }
+    else {
+        alert("You lost :(");
+        updateScores();
+    }
 }
 
 //------------------------------------------------------------------------
@@ -62,10 +70,6 @@ async function emailVerificationCodeQuery() {
         if (email_already_used === true) alert("Account with this email is already exists.\nPlease, try another.");
         else alert("Account with this email address is already exists.\nPlease, try another.");
     }
-}
-
-async function newGame() {
-
 }
 
 

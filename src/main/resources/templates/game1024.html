@@ -104,7 +104,7 @@
 <span th:if="${@authenticationController.isUserLogged()}">
     <div class="comments">
         Add a comment
-        <input id="comment" type="text" name="comment" placeholder="Write your comment here..." required onfocusout="addComment()">
+        <input id="comment" type="text" name="comment" placeholder="Write your comment here..." required onmouseout="addComment()">
     </div>
 </span>
 
